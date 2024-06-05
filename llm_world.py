@@ -9,7 +9,7 @@ from system_prompt import get_prompt
 
 current_state_filename = './data/current_state.csv'
 rows, cols = 10, 10
-max_step = 100
+max_step = 1000
 
 # ai_type = 'Llama 3'
 ai_type = 'Gemini 1.5 Flash'
@@ -58,7 +58,7 @@ def extract_state(prompt):
     else:
         state_data = []
 
-    state_data = [line for line in state_data if line.strip()]
+    state_data = [line.replace('*', '').strip() for line in state_data if line.strip()]
 
     return state_data
 
@@ -88,8 +88,10 @@ print(all_prompt)
 
 
 for step in range(max_step):
+    input()
     state_data_string = get_current_state()
     all_prompt = get_prompt(state_data_string)
+    # print(all_prompt)
 
     if ai_type == 'Gemini 1.5 Flash':
         print("I am Gemini 1.5 Flash")
@@ -107,7 +109,7 @@ for step in range(max_step):
 
         message = response['message']['content']
 
-    print(message)
+    # print(message)
     state_data = extract_state(message)
 
     if is_correct_format(state_data, rows, cols):
@@ -115,8 +117,9 @@ for step in range(max_step):
         new_filename = f'./data/state_{step_str}.csv'
         shutil.copy(current_state_filename, new_filename)
         print(f'Copied {current_state_filename} to {new_filename}')
-        print(state_data)
+        # print(state_data)
         save_current_state(state_data)
         print("save current data")
+        print(message)
     else:
         print('error not correct format.')
