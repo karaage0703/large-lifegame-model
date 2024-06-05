@@ -51,14 +51,14 @@ def save_current_state(state_data):
 
 
 def extract_state(prompt):
-    match = re.search(r'next_state(.*?)state_end', prompt, re.DOTALL)
+    match = re.search(r'last_state\s*(.*?)\s*state_end', prompt, re.DOTALL)
 
     if match:
         state_data = match.group(1).strip().split('\n')
     else:
         state_data = []
 
-    state_data = [line.replace('*', '').strip() for line in state_data if line.strip()]
+    state_data = [line.strip() for line in state_data if line.strip() and not line.strip().startswith('*')]
 
     return state_data
 
@@ -109,7 +109,6 @@ for step in range(max_step):
 
         message = response['message']['content']
 
-    # print(message)
     state_data = extract_state(message)
 
     if is_correct_format(state_data, rows, cols):
@@ -117,9 +116,11 @@ for step in range(max_step):
         new_filename = f'./data/state_{step_str}.csv'
         shutil.copy(current_state_filename, new_filename)
         print(f'Copied {current_state_filename} to {new_filename}')
-        # print(state_data)
         save_current_state(state_data)
         print("save current data")
         print(message)
+        # print(state_data)
     else:
+        print(message)
+        # print(state_data)
         print('error not correct format.')

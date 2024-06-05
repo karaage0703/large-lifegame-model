@@ -36,12 +36,21 @@ current_state
 state_end
 
 #### 出力:
-現在の状態の次のステップをcsv形式で「next_state」と「state_end」で囲んで記述してください。
-また現在の世界の様子を「explanation_start」と「explanation_end」で囲んで言葉で10文くらいで表現してください。
+- 現在の状態の次のステップをcsv形式で <n>_state と state_end で囲んで記述してください。nにはステップ数が入ります。
+- 進めるステップ数はルールに従って下さい。
+- 最後のステップは、必ず last_state と state_end で囲んで記述してください。
+- 最後の世界の様子を explanation_start と explanation_end で囲んで言葉で10文くらいで表現してください。
 例を以下に示します。
 
+1_state
+{state_data_string}
+state_end
 
-next_state
+2_state
+{state_data_string}
+state_end
+
+last_state
 {state_data_string}
 state_end
 
