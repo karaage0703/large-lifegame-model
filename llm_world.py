@@ -88,7 +88,6 @@ print(all_prompt)
 
 
 for step in range(max_step):
-    input()
     state_data_string = get_current_state()
     all_prompt = get_prompt(state_data_string)
     # print(all_prompt)
@@ -106,7 +105,6 @@ for step in range(max_step):
             model='llama3',
             messages=[{'role': 'user', 'content': all_prompt}],
         )
-
         message = response['message']['content']
 
     state_data = extract_state(message)
@@ -119,8 +117,6 @@ for step in range(max_step):
         save_current_state(state_data)
         print("save current data")
         print(message)
-        # print(state_data)
     else:
         print(message)
-        # print(state_data)
         print('error not correct format.')
